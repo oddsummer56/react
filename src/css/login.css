@@ -1,0 +1,13 @@
+#loginForm{
+    font-size: 18px;
+}
+
+
+#login-footer{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#kakaoLoginBtn{width: 146.8px;
+    height: 37.6px;
+}

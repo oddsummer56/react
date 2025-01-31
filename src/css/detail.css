@@ -1,0 +1,106 @@
+#detailPageContainer{
+    width:95%;
+    padding: 1% 5%;
+}
+
+h1{
+    width:95%;
+}
+
+#detail-top {
+    display:grid;
+    grid-template-columns:0.5fr 1fr;
+    margin-top: 20px;
+}
+#detail-top img{ width:270px; }
+
+#detail-top-contents{
+    display:grid;
+    grid-template-rows: 90% 10%;
+}
+
+#dataTable{ height: 300px; }
+
+#dataTable tr{ vertical-align: baseline; }
+
+.detail-section-title{
+    margin: 20px 0;
+    text-align: center;
+    font-weight: 500;
+}
+
+
+#detail-description {
+    margin-bottom: 30px;
+    white-space: pre-line;
+    text-align: center;
+    line-height: 1.1;
+}
+
+#priceLevel{
+    /*display:inline-block;*/
+    padding-right:15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#artistList{
+    /*display:grid;*/
+    /*grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;*/
+    width: 1092px;
+    text-align: center
+}
+.artistImg{
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.artistElem{
+    display: inline-block;
+    height: 230px;
+    width: 180px;
+}
+
+.ticketBtn{
+    margin: 0 5px;
+}
+
+
+/***** floating ***************************************/
+#floating-menu{
+    position: fixed;
+    right: 10px;
+    padding: 5px;
+    background: #a3c9ff;
+    color: #000;
+    width: 100px;
+    text-align: center;
+    border: 1px solid #0d6efd;
+    border-radius: 5px;
+    z-index: 2;
+}
+
+.floating-entry{
+    display: block;
+}
+
+.floating-entry img{
+    width: 90%;
+    cursor: pointer;
+    margin: 7px 0;
+}
+
+.floating-entry small{
+    display: block;
+    /*white-space: nowrap;*/
+    /*overflow: hidden;*/
+    /*text-overflow: ellipsis;*/
+    line-height: 1.4;
+    cursor: pointer;
+}
+/***** floating end ***********************************/

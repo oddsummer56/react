@@ -1,0 +1,40 @@
+#visitedContainer{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+}
+
+#visitedEntry{
+    display: grid;
+    grid-template-columns: 100px 5fr;
+    text-align: start;
+    border: 1px solid #9E9E9E;
+    border-radius: 10px;
+    width: 41vw;
+    margin: 5px;
+    cursor: pointer;
+}
+
+#visitedPoster{
+    width: 75px;
+    height: 100px;
+    margin-left: 10px;
+}
+
+.visitedEntryContents{
+    padding-left:5px;
+    border-left: 5px #BDBDBD solid;
+}
+
+#visitedEntryTitle{
+    width: 30vw;
+    font-size:27px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#visitedNothing{
+    height: 395px;
+    padding-top: 100px;
+    font-size: 25px;
+}

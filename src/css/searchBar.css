@@ -1,0 +1,27 @@
+#searchContainer{
+    display: grid;
+    grid-template-columns:0.1fr 0.75fr 0.75fr 0.75fr 1.25fr;
+}
+
+#queryText{
+    width: calc( 100% - 80px );
+}
+
+#arrowImg{
+    width: 50px;
+    height: 40px;
+    border: 2px solid;
+    border-right: none;
+    background-color: white;
+}
+
+#searchLoca{
+    align-items: center;
+}
+
+#city{
+    width: 260px;
+    border: 2px solid;
+    border-left: none;
+    border-right: none;
+}

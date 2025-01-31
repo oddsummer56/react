@@ -1,0 +1,51 @@
+#header{
+    display: grid;
+    grid-template-rows: 1.5fr 1fr;
+    border-bottom: 1px solid #cccccc;
+    margin-bottom: 10px;
+}
+
+#headerTop{
+    display: grid;
+    grid-template-columns: 8fr 2fr 2fr;
+    height: 75px;
+}
+
+/*.headerTopBtn{    text-align: center;    font-size: 30px;    padding-top: 10px;    color: #2f2f2f;    cursor: pointer;}*/
+/*.headerTopBtn:hover{    color: #0d6efd; }*/
+
+
+#logo{ height: 55px; text-align: left; cursor: pointer; }
+
+#joinBtn{ background-image: url(../img/joinBtn.png); background-repeat: no-repeat; background-size: 165px; background-position: center; cursor: pointer; }
+#joinBtn:hover{ background-image: url(../img/joinBtn_hover.png); }
+
+#loginBtn{ background-image: url(../img/loginBtn.png); background-repeat: no-repeat; background-size: 130px; background-position: center; cursor: pointer; }
+#loginBtn:hover{ background-image: url(../img/loginBtn_hover.png); }
+
+#logoutBtn{ background-image: url(../img/logoutBtn.png); background-repeat: no-repeat; background-size: 170px; background-position: center; cursor: pointer; }
+#logoutBtn:hover{ background-image: url(../img/logoutBtn_hover.png); }
+
+.headerComponents{
+
+}
+#headerBot{
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 6fr;
+    height: 50px;
+    padding-left: 10px;
+}
+
+/*.headerBotBtn{ font-size: 25px; color: #2f2f2f; cursor: pointer; text-align: center; }*/
+/*.headerBotBtn:hover{ color: #0d6efd; }*/
+
+#concertBtn{ background-image: url(../img/concertBtn.png); background-repeat: no-repeat; background-size: 90px; background-position: center; cursor: pointer; }
+#concertBtnSelected{ background-image: url(../img/concertBtn_hover.png); background-repeat: no-repeat; background-size: 90px; background-position: center; cursor: pointer; border-bottom: #0d6efd solid 5px;}
+#concertBtn:hover{ background-image: url(../img/concertBtn_hover.png); }
+
+#musicalBtn{ background-image: url(../img/musicalBtn.png); background-repeat: no-repeat; background-size: 160px; background-position: center; cursor: pointer; }
+#musicalBtnSelected{ background-image: url(../img/musicalBtn_hover.png); background-repeat: no-repeat; background-size: 160px; background-position: center; cursor: pointer; border-bottom: #0d6efd solid 5px;}
+#musicalBtn:hover{ background-image: url(../img/musicalBtn_hover.png); }
+#exhibitBtn{ background-image: url(../img/exhibitBtn.png); background-repeat: no-repeat; background-size: 130px; background-position: center; cursor: pointer; }
+#exhibitBtnSelected{ background-image: url(../img/exhibitBtn_hover.png); background-repeat: no-repeat; background-size: 130px; background-position: center; cursor: pointer; border-bottom: #0d6efd solid 5px;}
+#exhibitBtn:hover{ background-image: url(../img/exhibitBtn_hover.png); }

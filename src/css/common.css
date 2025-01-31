@@ -1,0 +1,22 @@
+@charset "utf-8";
+
+@font-face {
+    font-family: "NotoSansKR";
+    font-weight: 500;
+    src: url("../fonts/NotoSansKR-Medium.woff") format(woff)
+}
+
+body{
+    font-family: NotoSansKR;
+}
+
+#toTopBtn{
+    position: fixed;
+    bottom: 15px;
+    right: 25px;
+    display: none;
+    height: 60px;
+    width: 60px;
+    font-size: 27px;
+    border: 1px solid #787272
+}

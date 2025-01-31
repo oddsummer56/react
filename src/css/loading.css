@@ -1,0 +1,18 @@
+#loadingPage{
+    position:fixed;
+    top:0;
+    left:0;
+    height:100%;
+    width:100%;
+    background-color:white;
+    text-align:center;
+    z-index:9999;
+}
+
+#loadingPage img{
+    position:fixed;
+    top:25vh;
+    left:15vw;
+    width:70vw;
+    z-index:99999;
+}
