@@ -43,7 +43,7 @@ function ExclusiveBy() {
     const [isLoading, setIsLoading] = useState(true);
 
     const loadData = async () => {
-        await axios.get(`http://${process.env.REACT_APP_HOST}:8000/exclusive/main`)
+        await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/exclusive/main`)
             .then(res => res.data)
             .then(data => {
                 setData(data);

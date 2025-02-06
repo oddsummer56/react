@@ -51,7 +51,7 @@ function Join() {
                     helpMsgRef.current.classList.remove("ok");
                 }
            } else {
-               await fetch(`http://${process.env.REACT_APP_HOST}:8000/signup/check-id`,{
+               await fetch(`${process.env.REACT_APP_API_ENDPOINT}/signup/check-id`,{
                    method:"POST",
                    headers:{"Content-type":"application/json"},
                    body:JSON.stringify({id:idRef.current.value})
@@ -116,7 +116,7 @@ function Join() {
     const submit=async ()=>{
         const birthday=document.getElementById("birthday") as HTMLInputElement;
 
-        await fetch(`http://${process.env.REACT_APP_HOST}:8000/signup/signup`, {
+        await fetch(`${process.env.REACT_APP_API_ENDPOINT}/signup/signup`, {
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify({

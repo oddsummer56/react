@@ -32,7 +32,7 @@ function SearchRst() {
         //     body:JSON.stringify({"token":loadSession("loginToken")})*/
         // })
         //     .then(response => response.json())
-        axios.get(`http://${process.env.REACT_APP_HOST}:8000/search?`+searchParams.toString(), {
+        axios.get(`${process.env.REACT_APP_API_ENDPOINT}/search?`+searchParams.toString(), {
             headers: {
                 "Authorization": loadSession("loginToken") || loadSession("kakaoToken") || ""
             }

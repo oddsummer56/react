@@ -16,7 +16,7 @@ function Login() {
     const loginLogic=async ()=>{
         if((idRef.current && idRef.current.value.length>=4) && (pwRef.current&&pwRef.current.value.length>=8)){
 
-            await fetch(`http://${process.env.REACT_APP_HOST}:8000/auth/login`, {
+            await fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/login`, {
                 method:"POST",
                 headers:{"Content-Type":"application/json"},
                 //body: JSON.stringify({id:id.value, pw:encSHA256(pw.value)})
@@ -52,8 +52,8 @@ function Login() {
     }
 
     const kakao=()=> {
-        window.location.href=`http://${process.env.REACT_APP_HOST}:8000/kakao/getcode`;
-        //navigate(`http://${process.env.REACT_APP_HOST}:8000/kakao/getcode`)
+        window.location.href=`${process.env.REACT_APP_API_ENDPOINT}/kakao/getcode`;
+        //navigate(`${process.env.REACT_APP_API_ENDPOINT}/kakao/getcode`)
     }
 
     const join=()=>{

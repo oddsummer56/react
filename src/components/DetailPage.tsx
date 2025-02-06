@@ -32,7 +32,7 @@ function DetailPage() {
         //     //body:JSON.stringify({"token":loadSession("loginToken")})
         // })
         //     .then(response => response.json())
-        await axios.get(`http://${process.env.REACT_APP_HOST}:8000/detail/`+id,{
+        await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/detail/`+id,{
             headers:{"Authorization": loadSession("loginToken") || loadSession("kakaoToken") || "" },
         })
             .then(res=>res.data)

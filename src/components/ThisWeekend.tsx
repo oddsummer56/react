@@ -39,7 +39,7 @@ function ThisWeekend() {
     const [isLoading, setIsLoading] = useState(true);
 
     const loadData = async () => {
-        await axios.get(`http://${process.env.REACT_APP_HOST}:8000/this_weekend`)
+        await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/this_weekend`)
             .then(res => res.data)
             .then(data => {
                 //console.log(data)

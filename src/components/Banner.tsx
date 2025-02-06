@@ -59,7 +59,7 @@ function Banner() {
         //     method: "GET",
         // })
         //     .then(res => res.json())
-        await axios.get(`http://${process.env.REACT_APP_HOST}:8000/banner`)
+        await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/banner`)
             .then(res => res.data)
             .then(json => {
                 //console.log(json)

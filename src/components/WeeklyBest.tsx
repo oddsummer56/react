@@ -12,7 +12,7 @@ function WeeklyBest() {
   const getData = async () => {
     // await fetch(`http://${process.env.REACT_APP_HOST}:7777/top_show`)
     //     .then(res => res.json())
-      await axios.get(`http://${process.env.REACT_APP_HOST}:8000/popular`)
+      await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/popular`)
           .then(resp=>resp.data)
         .then(json => {
           //const json=data["top_tickets"]

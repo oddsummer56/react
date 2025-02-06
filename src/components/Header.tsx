@@ -24,7 +24,7 @@ function Header() {
 
         if(loadSession("kakaoToken")!==null){
             //window.location.href="http://localhost:8000/logout";
-            await fetch(`http://${process.env.REACT_APP_HOST}:8000/kakao/logout`, {
+            await fetch(`${process.env.REACT_APP_API_ENDPOINT}/kakao/logout`, {
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json",
@@ -38,7 +38,7 @@ function Header() {
                     alert("오류가 발생하였습니다.\n잠시 후 다시 시도해주세요.")
                 })
         } else {
-            fetch(`http://${process.env.REACT_APP_HOST}:8000/auth/logout`,{
+            fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/logout`,{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json",
@@ -92,6 +92,7 @@ const selected=()=>{
                 {!loadSession("isLogin") ? <div onClick={join} className={"headerTopBtn"} id={"joinBtn"}></div> : <div style={{alignSelf:"center"}}>
                     <span style={{color:"#595959", fontSize:"23px", marginRight:"10px", verticalAlign:"middle"}}>{loadSession("userNm")}님 안녕하세요</span>
                     <button className="btn btn-warning" onClick={() => { navigate("/visited") }}>방문기록</button>
+                    <button className="btn btn-light" onClick={() => { navigate("/likes") }}>찜목록</button>
                     { loadSession("userType")==="1"?
                         <button className="btn btn-danger" onClick={() => { navigate("/admin") }}>ADMIN</button>
                         : <></>

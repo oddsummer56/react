@@ -12,16 +12,16 @@ function LoginCallback() {
     if(!code){
         setTimeout(()=>{
             //window.location.href=`http://${process.env.REACT_APP_HOST}:3000`
-            navigate(`http://${process.env.REACT_APP_HOST}`)
+            window.location.reload()
         },3000)
     }
 
     const login=async ()=>{
-        // await fetch(`http://${process.env.REACT_APP_HOST}:8000/kakao/getToken?code=`+code,{
+        // await fetch(`${process.env.REACT_APP_API_ENDPOINT}/kakao/getToken?code=`+code,{
         //     method: "GET"
         // })
         //     .then(res=> res.json())
-        await axios.get(`http://${process.env.REACT_APP_HOST}:8000/kakao/getToken?code=`+code)
+        await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/kakao/getToken?code=`+code)
             .then(resp=>resp.data)
             .then((json) => {
                 saveSession("userNm", json["nickname"])

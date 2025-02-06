@@ -34,7 +34,7 @@ function FloatingMenu(props: { [key: string]: string | undefined }) {
         //     method:"GET"
         // })
         //     .then(res => res.json())
-        await axios.get(`http://${process.env.REACT_APP_HOST}:8000/recommendation/`+props.oid)
+        await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/recommendation/`+props.oid)
             .then(resp=>resp.data)
             .then(json => {
                 //console.log(json)

@@ -25,7 +25,7 @@ function ExclusiveAll() {
     const totalPage=Math.ceil(rstNum / 50)
 
     const loadData=async ()=>{
-        axios.get(`http://${process.env.REACT_APP_HOST}:8000/exclusive/all?`+searchParams.toString(), {
+        axios.get(`${process.env.REACT_APP_API_ENDPOINT}/exclusive/all?`+searchParams.toString(), {
             headers: {
                 "Authorization": loadSession("loginToken") || loadSession("kakaoToken") || ""
             }
