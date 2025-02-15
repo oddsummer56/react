@@ -20,6 +20,7 @@ import ExclusiveAll from "./components/ExclusiveAll";
 import Admin from "./components/Admin";
 import Visited from "./components/Visited";
 import ErrorPage from "./components/ErrorPage";
+import Likes from './components/Likes';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -41,6 +42,7 @@ root.render(
                 <Route path="/join/success" element={<JoinCongratuation />}/>
                 <Route path="/admin" element={<Admin />}/>
                 <Route path="/visited" element={<Visited />}/>
+                <Route path="/likes" element={<Likes/>}/>
                 <Route path="*" element={<ErrorPage />}/>
             </Routes>
             <ToTopBtn />
