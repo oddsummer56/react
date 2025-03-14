@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {loadSession, saveSession} from "../../scripts/common";
+import {loadSession, removeSession, saveSession} from "../../scripts/common";
 import axios from "axios";
 
 function LoginCallback() {
@@ -25,7 +25,10 @@ function LoginCallback() {
             .then(resp=>resp.data)
             .then((json) => {
                 saveSession("userNm", json["nickname"])
-                saveSession("kakaoToken", json["access_token"])
+                removeSession("loginToken");
+                const accessToken = json["access_token"];
+                axios.defaults.headers.common['Authorization'] = accessToken;
+                saveSession("kakaoToken", accessToken)
                 saveSession("userType", json["user_type"])
             } )
             .then(()=>{

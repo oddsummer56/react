@@ -5,11 +5,21 @@ import "../css/header.css";
 import Login from "./Login";
 import logo from "../img/TicketMoa-logo.png"
 import {loadSession, removeSession} from "../scripts/common";
+import axios from "axios";
 
 function Header() {
 
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams();
+
+    useEffect(()=>{
+        const token = loadSession("loginToken") || loadSession("kakaoToken");
+        if (token) {
+            axios.defaults.headers.common["Authorization"] = token;
+        } else {
+            delete axios.defaults.headers.common["Authorization"];
+        }
+    }, [])
 
     const join=()=>{
         navigate("/join")

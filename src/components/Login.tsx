@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom"
 import "../css/login.css";
 import kakaoLogin from "../img/kakao_login_medium_narrow.png"
 import {loadSession, pwEncode, removeSession, saveSession} from "../scripts/common";
+import axios from "axios";
 
 function Login() {
 
@@ -24,7 +25,10 @@ function Login() {
             })
                 .then(response=> response.json())
                 .then(json=> {
-                        saveSession("loginToken", json["access_token"]);
+                        removeSession("kakaoToken");
+                        const accessToken = json["access_token"];
+                        axios.defaults.headers.common['Authorization'] = accessToken;
+                        saveSession("loginToken", accessToken);
                         saveSession("refreshToken", json["refresh_token"]);
                         saveSession("isLogin", true);
                         saveSession("userNm", json["username"])
@@ -34,7 +38,7 @@ function Login() {
                     if (loadSession("isLogin")){
                         if((loadSession("loginToken")!=="undefined" || loadSession("refreshToken"))!=="undefined"){
                             window.location.href="/";
-                            //navigate("/")
+                            // navigate("/")
                         }
                         else {
                             removeSession("loginToken")

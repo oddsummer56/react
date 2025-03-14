@@ -13,7 +13,7 @@ function Likes() {
     const [isLoading, setIsLoading] = useState(true);
 
     const loadData=async ()=> {
-        await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/get_like/hihello`)
+        await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/get_like`)
             .then(res => res.data)
             .then(json => {
                 //console.log(json)
@@ -25,7 +25,7 @@ function Likes() {
                 /***** banner fetch save ************/
             })
             .catch(err=> {
-                console.error("banner\n└", err)
+                console.error("banner\n", err)
                 const json = localStorage.getItem("bannerData")
                 if(json!==null){
                    setData(JSON.parse(json))
