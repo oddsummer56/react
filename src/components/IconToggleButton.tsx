@@ -1,20 +1,22 @@
-import { useEffect, useState } from "react"
+import { ButtonHTMLAttributes, useEffect, useState } from "react"
 import { ReactComponent as HeartIcon } from "../img/heart.svg";
 import { ReactComponent as HeartFillIcon } from "../img/heart_fill.svg";
 
-const IconToggleButton = ({value = false, onChangeValue}: {value?: boolean, onChangeValue?: (value: boolean) => void }) => {
-    const [on, setOn] = useState(value);
+const IconToggleButton = ({initialValue = false, onChangeValue, ...props}
+    : {initialValue?: boolean, onChangeValue?: (value: boolean) => void } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'value'| 'onClick' | 'children'>) => {
+    const [on, setOn] = useState<boolean>(initialValue);
     const toggle = () => {
         const newValue = !on;
-        setOn(newValue);
         onChangeValue?.(newValue);
+        setOn(newValue);
     }
-
-    useEffect(()=>setOn(value),[value])
     return (
         <button
+            {...props}
             onClick={toggle} 
             style={{
+                ...props?.style,
+                width: 'fit-content',
                 padding: 4,
                 outline:'none',
                 border:'none',
