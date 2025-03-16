@@ -42,7 +42,10 @@ function Header() {
                 },
                 //body:JSON.stringify({"kakaoToken":loadSession("kakaoToken")})
             })
-                .then(response=> window.location.href=response["url"])
+                .then(response=> {
+                    removeSession("kakaoToken")
+                    window.location.href=response["url"]
+                })
                 .catch(err=> {
                     console.error(err)
                     alert("오류가 발생하였습니다.\n잠시 후 다시 시도해주세요.")
