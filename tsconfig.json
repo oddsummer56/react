@@ -19,5 +19,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-  }
+  },
+  "include": [
+    "../front-end-22.12/src"
+  ]
 }
