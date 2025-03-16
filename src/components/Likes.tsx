@@ -27,9 +27,11 @@ function Likes() {
             .then(res => res.data)
             .then(json => {
                 //console.log(json)
-                const listdata = [...(json as LikedTicketData[])]
-                listdata.reverse();
-                setData(listdata)
+                if(Array.isArray(json)) {
+                    const listdata = [...(json as LikedTicketData[])]
+                    listdata.reverse();
+                    setData(listdata)
+                }
                 
                 setIsLoading(false)
             })
@@ -111,7 +113,7 @@ function Likes() {
                                         fontSize: 27
                                     }}>{i.title}</div>
                                     <div style={{ wordBreak:'break-all' }}>{i.location}</div>
-                                    <div style={{ wordBreak:'break-all' }} >{`${formatDate(new Date(i.open_date))}~${formatDate(new Date(i.end_date))}`}</div>
+                                    <div style={{ wordBreak:'break-all' }} >{`${formatDate(i.open_date)}~${formatDate(i.end_date)}`}</div>
                                 </div>
                                 <div>
                                     <button 
@@ -150,13 +152,22 @@ function Likes() {
     );
 }
 
-function formatDate(date: Date) {
-    return new Intl.DateTimeFormat('ko-KR', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        timeZone: 'Asia/Seoul'
-    }).format(date).replace(/\.\s/g, '.').replace(/\.$/, '');
+function formatDate(datetime: string) {
+    if (!datetime) return ''
+
+    try {
+        const date = new Date(datetime);
+
+        return new Intl.DateTimeFormat('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            timeZone: 'Asia/Seoul'
+        }).format(date).replace(/\.\s/g, '.').replace(/\.$/, '');
+    } catch {
+        return datetime;
+    }
+
 }
 
 export default Likes;
