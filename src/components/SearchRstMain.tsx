@@ -3,18 +3,20 @@ import "../css/rstPage.css";
 import RstEntity from "./RstEntity";
 import {useSearchParams} from "react-router-dom";
 import {v4 as uuidv4} from "uuid";
+import { TicketDataWithStatus } from "../scheme/ticket";
+import { loadSession } from "../scripts/common";
 
-function SearchRstMain(props:{[key:string]:string|number|{[key:string]:string|number|boolean}[]|undefined}) {
+function SearchRstMain(props:{ rstNum: number; data: TicketDataWithStatus[]; onClickLike?: (params: {id: string; isLiked: boolean}) => void }) {
+    const isLogin = loadSession('isLogin');
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
 
     const currPage=searchParams.get("currPage")
     const currPageNum=currPage?Number.parseInt(currPage):1
 
 
-    const data:{[key:string]:string|number|boolean}[] = (props.data && typeof props.data==="object")?props.data:[]
+    const data = (props.data && typeof props.data==="object") ? props.data:[]
     const partitionData = data.slice(((currPageNum-1)*50),currPageNum*50)
-
 
     return (
         <div id={"rstMain"}>
@@ -31,6 +33,11 @@ function SearchRstMain(props:{[key:string]:string|number|{[key:string]:string|nu
                             _link={d["id"]}
                             category={d["category"]}
                             key={uuidv4()}
+                            likeToggle={isLogin && props.onClickLike ?{
+                                value: d.is_liked,
+                                onClick: ()=>{ props.onClickLike?.({id: d.id, isLiked: d.is_liked});
+                                }
+                            }: undefined}
                         />
                     })
                 }

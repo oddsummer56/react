@@ -10,6 +10,7 @@ import Loading from "./Loading";
 
 import {loadSession, testFilter} from "../scripts/common";
 import "../css/rstPage.css";
+import { TicketData, TicketDataWithStatus } from "../scheme/ticket";
 
 function SearchRst() {
 
@@ -19,7 +20,7 @@ function SearchRst() {
     const currPage=searchParams.get("currPage")?searchParams.get("currPage"):"1";
     const queryText=searchParams.get("keyword")?searchParams.get("keyword"):"";
 
-    const [data,setData]=useState([])
+    const [data,setData]=useState<TicketDataWithStatus[]>([])
     const [rstNum,setRstNum]=useState(0)
     const [isLoading,setIsLoading]=useState(true)
 
@@ -85,6 +86,29 @@ function SearchRst() {
         loadData()
     },[queryText, currPage, searchParams])
 
+    const handleClickLike = async ({id, isLiked}:{id: string; isLiked: boolean}) => {
+        try {
+            const { data } = await (isLiked ? axios.delete<string>(`${process.env.REACT_APP_API_ENDPOINT}/del_like`,{
+                data: {
+                    id: id
+                }
+            }) : axios.post<TicketData>(`${process.env.REACT_APP_API_ENDPOINT}/like`,{
+                id: id
+            }))
+    
+            setData(pre => {
+                const itemId = typeof data === 'string'? data : data.id;
+                const dataIndex = pre.findIndex(({id})=> id===itemId)
+                if(dataIndex === -1) return pre;
+    
+                const newData = [...pre];
+                newData[dataIndex].is_liked = !isLiked;
+                return newData;
+            })
+        } catch(e) {
+            alert('잠시 후 다시 시도해 주세요')
+        }
+    } 
 
     return (
         isLoading?(<Loading />):(
@@ -92,7 +116,7 @@ function SearchRst() {
             <SearchRstTop query={queryText}/>
             <div id={"rstNum"}>티켓 ({rstNum})</div>
             { rstNum>0?
-                ( <SearchRstMain rstNum={rstNum} data={data}/> )
+                ( <SearchRstMain rstNum={rstNum} data={data} onClickLike={handleClickLike}/> )
                 :( <div id={"rstMain"}>
                         <div id={"noRst"}>
                             <h4> 검색하신 "{queryText}"에 대한 티켓이 존재하지 않습니다.</h4>

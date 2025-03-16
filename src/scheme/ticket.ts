@@ -9,6 +9,11 @@ type TicketData = {
     is_liked: boolean;
 }
 
+type TicketDataWithStatus = TicketData & {
+    isExclusive: boolean;
+    onSale: boolean;
+}
+
 type ExclusiveByData = {
     _id: number;
     items: TicketData[]
@@ -16,5 +21,6 @@ type ExclusiveByData = {
 
 export type {
     ExclusiveByData,
-  TicketData
+    TicketDataWithStatus,
+    TicketData
 }

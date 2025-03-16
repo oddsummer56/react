@@ -4,9 +4,10 @@ import { v4 as uuidv4 } from "uuid";
 import MainEntry from "./MainEntry"
 import axios from "axios";
 import { TicketData } from "../scheme/ticket";
+import { loadSession } from "../scripts/common";
 
 function WeeklyBest() {
-
+  const isLogin = loadSession('isLogin');
   const [data, setData] = useState<TicketData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -142,7 +143,7 @@ function WeeklyBest() {
     } catch(e) {
         alert('잠시 후 다시 시도해 주세요')
     }
-} 
+ } 
 
 
   return isLoading?
@@ -164,11 +165,11 @@ function WeeklyBest() {
               onSale={false}
               isExclusive={false}
               _link={d["id"]}
-              likeToggle={{
+              likeToggle={isLogin ?{
                 value: d.is_liked,
                 onClick: (e)=>{handleClickLike({id: d.id, isLiked: d.is_liked});
                 }
-            }}
+            }: undefined}
               key={uuidv4()}
           />)
         })

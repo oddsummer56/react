@@ -4,8 +4,20 @@ import {useNavigate} from "react-router-dom";
 import {loadSession} from "../scripts/common";
 
 import "../css/rstPage.css";
+import IconToggleButton, { IconToggleButtonProps } from "./IconToggleButton";
 
-function RstEntity(props:{[key:string]:string|number|boolean|undefined}) {
+function RstEntity(props:{
+    className?: string;
+    posterImg?: string;
+    _link?:string;
+    showTitle: string;
+    showLocation: string;
+    category: string;
+    showDate: string;
+    onSale?:boolean;
+    isExclusive?:boolean;
+    likeToggle?: Pick<IconToggleButtonProps, 'value' | 'onClick'>
+}) {
 
     const navigate = useNavigate();
 
@@ -39,6 +51,9 @@ function RstEntity(props:{[key:string]:string|number|boolean|undefined}) {
                             : <span className="badge text-bg-danger">판매예정</span>
                     }
                     {props.isExclusive ? <span className="badge text-bg-purple">단독판매</span> : <></>}
+                    <div>
+                        {props.likeToggle ? <IconToggleButton {...props.likeToggle} /> : <></>}
+                    </div>
                 </div>
             </div>
         </div>

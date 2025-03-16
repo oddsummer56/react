@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 import axios from "axios";
-import {ticketHost} from "../scripts/common";
+import {loadSession, ticketHost} from "../scripts/common";
 import {v4 as uuidv4} from "uuid";
 import "../css/main.css";
 import MainEntry from "./MainEntry";
@@ -21,10 +21,11 @@ const id2host:{[key:string]:string} = {
 
 
 function ExclusiveBy() {
+    const isLogin = loadSession('isLogin');
 
     const [data, setData] = useState<ExclusiveByData[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-
+    const [filter, setFilter] = useState<number>(1);
     const loadData = async () => {
         await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/exclusive/main`)
             .then(res => res.data)
@@ -122,32 +123,8 @@ function ExclusiveBy() {
     //     }
     // ]
 
-
-
-    const switchMenu=(v:string)=>{
-        const exclusives = document.getElementsByClassName("exclusive-entity");
-
-        for(let i=0;i<exclusives.length;i++){
-            if (exclusives[i].className.includes(v)) exclusives[i].style.display="block";
-            else exclusives[i].style.display="none";
-        }
-        const goExclusive=document.getElementsByClassName("gotoTotalBtn");
-        for(let i=0;i<goExclusive.length;i++){
-            if (goExclusive[i].className.includes(`go${v}`)) goExclusive[i].style.display="block";
-            else goExclusive[i].style.display="none";
-        }
-    }
-
-
-    const initSelect=()=>{
-        const init_selected=document.getElementById("interpark") as HTMLInputElement;
-        if (init_selected===null) setTimeout(()=>{initSelect()},100)
-        else init_selected.click()
-    }
-
     useEffect(() => {
         loadData()
-        initSelect()
     }, []);
 
     const handleClickLike = async ({id, isLiked}:{id: string; isLiked: boolean}) => {
@@ -193,15 +170,14 @@ function ExclusiveBy() {
                     return <div key={uuidv4()}>
                         <input type="radio" className="mainRadio exclusiveChk" name="exclusiveChk"
                                id={id2host[i["_id"].toString()]} autoComplete="off"
-                               onChange={() => switchMenu(id2host[i["_id"].toString()])}/>
+                               onChange={() => setFilter(i._id)} checked={i._id === filter}/>
                         <label className="mainRadioLabel exclusiveChkLabel"
                                htmlFor={id2host[i["_id"].toString()]}>{ticketHost[i["_id"].toString()]}</label>
                     </div>
                 })}
             </div>
             <div className="mainEntryContainer">
-
-                {data.map(i => {
+                {data.filter(({_id})=>_id === filter).slice(0,4).map(i => {
                     return i["items"].map(j => {
                         return <MainEntry
                             posterImg={j["poster_url"]}
@@ -209,12 +185,12 @@ function ExclusiveBy() {
                             showLocation={j["location"]}
                             showDate={j["start_date"] + "~" + j["end_date"]}
                             _link={j["id"]}
-                            className={id2host[i["_id"].toString()]}
-                            likeToggle={{
+                            className={`exclusive-entity ${id2host[i["_id"].toString()]}`}
+                            likeToggle={isLogin ? {
                                 value: j.is_liked,
                                 onClick: (e)=>{handleClickLike({id: j.id, isLiked: j.is_liked});
                                 }
-                            }}
+                            }: undefined}
                             key={uuidv4()}
                         />
                     })

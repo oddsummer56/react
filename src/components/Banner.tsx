@@ -8,9 +8,20 @@ import 'slick-carousel/slick/slick-theme.css';
 import "../css/banner.css";
 import axios from "axios";
 import {v4 as uuidv4} from "uuid";
+import { TicketData } from "../scheme/ticket";
+import IconToggleButton, { IconToggleButtonProps } from "./IconToggleButton";
+import { loadSession } from "../scripts/common";
 
 
-function BannerEntry(props:{[key:string]:string|number|boolean|undefined}) {
+function BannerEntry(props: {
+    className?: string;
+    posterImg?: string;
+    _link?:string;
+    showTitle: string;
+    startDate: string;
+    endDate: string;
+    likeToggle?: Pick<IconToggleButtonProps, 'value' | 'onClick'>;
+}) {
 
     const navigate = useNavigate();
 
@@ -26,7 +37,12 @@ function BannerEntry(props:{[key:string]:string|number|boolean|undefined}) {
                     <h5 className={"showTitle"} onClick={() => {
                         move(props._link)
                     }}>{props.showTitle}</h5>
-                    <small className={"showDate"}>{props.startDate+"~"+props.endDate}</small><br/>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        <div style={{ flex: 1 }}>
+                            <small className={"showDate"}>{props.startDate+"~"+props.endDate}</small>
+                        </div>
+                        {props.likeToggle ? <IconToggleButton {...props.likeToggle} /> : <></>}
+                    </div>
                 </div>
             </div>
         </>
@@ -51,7 +67,9 @@ function Banner() {
         className: 'center' // Slider 클래스설정
     };
 
-    const [data, setData] = useState(null);
+    const isLogin = loadSession('isLogin');
+
+    const [data, setData] = useState<TicketData[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const loadData=async ()=> {
@@ -86,6 +104,30 @@ function Banner() {
         loadData()
     }, []);
 
+    const handleClickLike = async ({id, isLiked}:{id: string; isLiked: boolean}) => {
+        try {
+            const { data } = await (isLiked ? axios.delete<string>(`${process.env.REACT_APP_API_ENDPOINT}/del_like`,{
+                data: {
+                    id: id
+                }
+            }) : axios.post<TicketData>(`${process.env.REACT_APP_API_ENDPOINT}/like`,{
+                id: id
+            }))
+
+            setData(pre => {
+                const itemId = typeof data === 'string'? data : data.id;
+                const dataIndex = pre.findIndex(({id})=> id === itemId)
+                if(dataIndex === -1) return pre;
+
+                const newData = [...pre];
+                newData[dataIndex].is_liked = !isLiked;
+                return newData;
+            })
+        } catch(e) {
+            alert('잠시 후 다시 시도해 주세요')
+        }
+    } 
+
     return isLoading?
         <div id="bannerLoadingSection" >
             <img src={"/static/media/loading.gif"} alt={"Loading"} />
@@ -103,6 +145,10 @@ function Banner() {
                             startDate={d["start_date"]}
                             endDate={d["end_date"]}
                             _link={d["id"]}
+                            likeToggle={isLogin? {
+                                value: d.is_liked,
+                                onClick: ()=>handleClickLike({id: d.id, isLiked: d.is_liked})
+                            }: undefined}
                         />
                     </div>)
                 })}
