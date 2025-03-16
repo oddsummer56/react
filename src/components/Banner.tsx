@@ -94,7 +94,7 @@ function Banner() {
         :(
         <Slider {...settings}>
             {
-                data.map((d)=>{
+                (data ?? []).map((d)=>{
                     return (<div id={"entryWrap"} style={{width: "10px"}} key={uuidv4()}>
                         <BannerEntry
                             className={"sliderContainer"}
