@@ -1,19 +1,14 @@
-import { ButtonHTMLAttributes, useEffect, useState } from "react"
+import { ButtonHTMLAttributes } from "react"
 import { ReactComponent as HeartIcon } from "../img/heart.svg";
 import { ReactComponent as HeartFillIcon } from "../img/heart_fill.svg";
 
-const IconToggleButton = ({initialValue = false, onChangeValue, ...props}
-    : {initialValue?: boolean, onChangeValue?: (value: boolean) => void } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'value'| 'onClick' | 'children'>) => {
-    const [on, setOn] = useState<boolean>(initialValue);
-    const toggle = () => {
-        const newValue = !on;
-        onChangeValue?.(newValue);
-        setOn(newValue);
-    }
+type Props = { value?: boolean } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'value' | 'children'>
+
+const IconToggleButton = ({value = false, ...props}: Props) => {
+
     return (
         <button
-            {...props}
-            onClick={toggle} 
+            {...props} 
             style={{
                 ...props?.style,
                 width: 'fit-content',
@@ -23,9 +18,10 @@ const IconToggleButton = ({initialValue = false, onChangeValue, ...props}
                 backgroundColor:'transparent'
             }}
         >
-            {on ? <HeartFillIcon color='red'/> : <HeartIcon color='gray'/>}
+            {value ? <HeartFillIcon color='red'/> : <HeartIcon color='gray'/>}
         </button>
     )
 }
 
 export default IconToggleButton;
+export type { Props as IconToggleButtonProps }

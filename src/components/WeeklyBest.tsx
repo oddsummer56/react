@@ -3,10 +3,11 @@ import { v4 as uuidv4 } from "uuid";
 
 import MainEntry from "./MainEntry"
 import axios from "axios";
+import { TicketData } from "../scheme/ticket";
 
 function WeeklyBest() {
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<TicketData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const getData = async () => {
@@ -119,6 +120,30 @@ function WeeklyBest() {
     getData();
   }, []);
 
+  const handleClickLike = async ({id, isLiked}:{id: string; isLiked: boolean}) => {
+    try {
+        const { data } = await (isLiked ? axios.delete<string>(`${process.env.REACT_APP_API_ENDPOINT}/del_like`,{
+            data: {
+                id: id
+            }
+        }) : axios.post<TicketData>(`${process.env.REACT_APP_API_ENDPOINT}/like`,{
+            id: id
+        }))
+
+        setData(pre => {
+            const itemId = typeof data === 'string'? data : data.id;
+            const dataIndex = pre.findIndex(({id})=> id===itemId)
+            if(dataIndex === -1) return pre;
+
+            const newData = [...pre];
+            newData[dataIndex].is_liked = !isLiked;
+            return newData;
+        })
+    } catch(e) {
+        alert('잠시 후 다시 시도해 주세요')
+    }
+} 
+
 
   return isLoading?
       <div id="LoadingSection" >
@@ -131,7 +156,7 @@ function WeeklyBest() {
       {
         data.map((d, j) => {
           return (<MainEntry
-              className={"mainEntry"}
+              className={"mainEntry mx-auto my-0"}
               posterImg= {d["poster_url"]}
               showTitle={d["title"]}
               showLocation={d["location"]}
@@ -139,6 +164,11 @@ function WeeklyBest() {
               onSale={false}
               isExclusive={false}
               _link={d["id"]}
+              likeToggle={{
+                value: d.is_liked,
+                onClick: (e)=>{handleClickLike({id: d.id, isLiked: d.is_liked});
+                }
+            }}
               key={uuidv4()}
           />)
         })

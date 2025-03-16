@@ -1,9 +1,21 @@
 import React from "react";
 import "../css/rstPage.css";
 import {useNavigate} from "react-router-dom";
-import {loadSession} from "../scripts/common";
+import IconToggleButton, { IconToggleButtonProps } from "./IconToggleButton";
 
-function MainEntry(props:{[key:string]:string|number|boolean|undefined}) {
+type Props = {
+    className?: string;
+    posterImg?: string;
+    _link?:string;
+    showTitle: string;
+    showLocation: string;
+    showDate: string;
+    onSale?:boolean;
+    isExclusive?:boolean;
+    likeToggle?: Pick<IconToggleButtonProps, 'value' | 'onClick'>
+}
+
+function MainEntry(props : Props) {
 
     const navigate = useNavigate();
 
@@ -24,6 +36,7 @@ function MainEntry(props:{[key:string]:string|number|boolean|undefined}) {
                     {props.onSale ? <span className="badge text-bg-primary">판매중</span> : <></>
                     }
                     {props.isExclusive ? <span className="badge text-bg-purple">단독판매</span> : <></>}
+                    {props.likeToggle ? <IconToggleButton {...props.likeToggle} /> : <></>}
             </div>
             </div>
         </>

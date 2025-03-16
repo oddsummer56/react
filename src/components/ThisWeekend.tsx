@@ -4,8 +4,10 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {v4 as uuidv4} from "uuid";
 import "../css/main.css";
+import MainEntry from "./MainEntry";
+import { TicketData } from "../scheme/ticket";
 
-const catDictionary = {
+const catDictionary: {[key in string]: string} = {
     "콘서트":"concert",
     "연극":"musical",
     "뮤지컬":"musical",
@@ -13,29 +15,10 @@ const catDictionary = {
     "전시/행사":"exhibit"
 }
 
-function Entity(props:{[key:string]:string|undefined}) {
-    const navigate = useNavigate();
-
-    const move= (i: string | number | boolean | undefined)=>{
-        navigate("/detail/"+i?.toString());
-    }
-
-    return (<div className={"card weekend-entity "+props.category}>
-        <img src={props.posterImg?.toString()} alt={"Poster"} className="card-img-top posterImg" onClick={()=>{move(props._link)}} />
-        <div className="card-body">
-            <h5 className={"showTitle"} onClick={() => {
-                move(props._link)
-            }}>{props.showTitle}</h5>
-            <small className={"showLocation"}>{props.showLocation}</small><br/>
-            <small className={"showDate"}>{props.showDate}</small><br/>
-        </div>
-    </div>);
-}
-
 
 function ThisWeekend() {
 
-    const [data, setData] = useState();
+    const [data, setData] = useState<TicketData[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const loadData = async () => {
@@ -64,15 +47,15 @@ function ThisWeekend() {
 
     const switchMenu=(v:string)=>{
         const weekends = document.getElementsByClassName("weekend-entity");
-        let dispCnt=0
+        let dispCnt = 0
 
-        for(let i=0;i<weekends.length;i++){
-            if (weekends[i].className.includes(v) && dispCnt<4) {
-                weekends[i].style.display = "block";
+        Array.from(weekends).forEach((e)=>{
+            if (e.className.includes(v) && dispCnt < 4) {
+               (e as HTMLElement).style.display = "block";
                 dispCnt++
             }
-            else weekends[i].style.display="none";
-        }
+            else (e as HTMLElement).style.display="none";
+        })
     }
 
 
@@ -81,6 +64,30 @@ function ThisWeekend() {
         if (init_selected===null) setTimeout(()=>{initSelect()},100)
         else init_selected.click()
     }
+
+    const handleClickLike = async ({id, isLiked}:{id: string; isLiked: boolean}) => {
+        try {
+            const { data } = await (isLiked ? axios.delete<string>(`${process.env.REACT_APP_API_ENDPOINT}/del_like`,{
+                data: {
+                    id: id
+                }
+            }) : axios.post<TicketData>(`${process.env.REACT_APP_API_ENDPOINT}/like`,{
+                id: id
+            }))
+
+            setData(pre => {
+                const itemId = typeof data === 'string'? data : data.id;
+                const dataIndex = pre.findIndex(({id})=> id===itemId)
+                if(dataIndex === -1) return pre;
+
+                const newData = [...pre];
+                newData[dataIndex].is_liked = !isLiked;
+                return newData;
+            })
+        } catch(e) {
+            alert('잠시 후 다시 시도해 주세요')
+        }
+    } 
 
     useEffect(() => {
         loadData()
@@ -108,13 +115,18 @@ function ThisWeekend() {
             </div>
             <div className="mainEntryContainer">
                 {data.map(j => {
-                    return <Entity
+                    return <MainEntry
                         posterImg={j["poster_url"]}
                         showTitle={j["title"]}
                         showLocation={j["location"]}
                         showDate={j["start_date"] + "~" + j["end_date"]}
                         _link={j["id"]}
-                        category={catDictionary[j["category"]]}
+                        className={catDictionary[j["category"]]}
+                        likeToggle={{
+                            value: j.is_liked,
+                            onClick: (e)=>{handleClickLike({id: j.id, isLiked: j.is_liked});
+                            }
+                        }}
                         key={uuidv4()}
                         />
                     })

@@ -5,6 +5,8 @@ import axios from "axios";
 import {ticketHost} from "../scripts/common";
 import {v4 as uuidv4} from "uuid";
 import "../css/main.css";
+import MainEntry from "./MainEntry";
+import type { ExclusiveByData, TicketData } from "../scheme/ticket"
 
 // const ticketHost:{[key:string]:string} = {
 //     "1" : "인터파크 티켓",
@@ -17,29 +19,10 @@ const id2host:{[key:string]:string} = {
     "3" : "ticketlink",
 }
 
-function Entity(props:{[key:string]:string|undefined}) {
-    const navigate = useNavigate();
-
-    const move= (i: string | number | boolean | undefined)=>{
-        navigate("/detail/"+i?.toString());
-    }
-
-    return (<div className={"card exclusive-entity "+props.hosts}>
-        <img src={props.posterImg?.toString()} alt={"Poster"} className="card-img-top posterImg" onClick={()=>{move(props._link)}} />
-        <div className="card-body">
-            <h5 className={"showTitle"} onClick={() => {
-                move(props._link)
-            }}>{props.showTitle}</h5>
-            <small className={"showLocation"}>{props.showLocation}</small><br/>
-            <small className={"showDate"}>{props.showDate}</small><br/>
-        </div>
-    </div>);
-}
-
 
 function ExclusiveBy() {
 
-    const [data, setData] = useState();
+    const [data, setData] = useState<ExclusiveByData[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const loadData = async () => {
@@ -167,6 +150,36 @@ function ExclusiveBy() {
         initSelect()
     }, []);
 
+    const handleClickLike = async ({id, isLiked}:{id: string; isLiked: boolean}) => {
+        try {
+            const { data } = await (isLiked ? axios.delete<string>(`${process.env.REACT_APP_API_ENDPOINT}/del_like`,{
+                data: {
+                    id: id
+                }
+            }) : axios.post<TicketData>(`${process.env.REACT_APP_API_ENDPOINT}/like`,{
+                id: id
+            }))
+
+            setData(pre => {
+                const itemId = typeof data === 'string'? data : data.id;
+
+                for(let i=0; i<pre.length; i++) {
+                    for(let j=0; j < pre[i].items.length; j++) {
+                        if(pre[i].items[j].id === itemId) {
+                            const newData = [...pre];
+                            newData[i].items[j].is_liked = !isLiked;
+                            return newData;
+                        }
+                    }
+                }
+
+                return pre;
+            })
+        } catch(e) {
+            alert('잠시 후 다시 시도해 주세요')
+        }
+    } 
+
 
     return isLoading ?
         <div id="LoadingSection">
@@ -190,13 +203,18 @@ function ExclusiveBy() {
 
                 {data.map(i => {
                     return i["items"].map(j => {
-                        return <Entity
+                        return <MainEntry
                             posterImg={j["poster_url"]}
                             showTitle={j["title"]}
                             showLocation={j["location"]}
                             showDate={j["start_date"] + "~" + j["end_date"]}
                             _link={j["id"]}
-                            hosts={id2host[i["_id"].toString()]}
+                            className={id2host[i["_id"].toString()]}
+                            likeToggle={{
+                                value: j.is_liked,
+                                onClick: (e)=>{handleClickLike({id: j.id, isLiked: j.is_liked});
+                                }
+                            }}
                             key={uuidv4()}
                         />
                     })
